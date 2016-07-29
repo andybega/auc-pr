@@ -25,6 +25,10 @@ auc_pr <- function(obs, pred) {
   
   # take out division by 0 for lowest threshold
   xy <- subset(xy, !is.nan(xy$precision))
+
+  # Designate recall = 0 as precision = x...arbitrary
+  xy <- rbind(c(0, 0), xy)
+  #xy <- xy[!(rowSums(xy)==0), ]
   
   res   <- trapz(xy$recall, xy$precision)
   res
@@ -45,6 +49,13 @@ rocdf <- function(pred, obs, data=NULL, type=NULL) {
   rocr_df <- prediction(pred, obs)
   rocr_pr <- performance(rocr_df, rocr_xy[1], rocr_xy[2])
   xy <- data.frame(rocr_pr@x.values[[1]], rocr_pr@y.values[[1]])
+
+  # If PR, designate first (undefined) point as recall = 0, precision = x
+  if (type=="pr") {
+    xy[1, 2] <- 0
+    #xy <- xy[!(rowSums(xy)==0), ]
+  }
+
   colnames(xy) <- switch(type, roc=c("tpr", "fpr"), pr=c("rec", "prec"))
   return(xy)
 }
