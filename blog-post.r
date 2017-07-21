@@ -3,7 +3,7 @@
 #   Precision-recall behavior.
 #
 
-setwd("~/Desktop/auc-pr")
+setwd("~/Work/mireg-blogs-not-on-git/auc-pr")
 
 library(ggplot2)
 library(scales)
@@ -198,10 +198,10 @@ ggsave(filename="graphics/roc-example.png", plot=p, width=2.2, height=2, units="
 
 # Instead of FPR, plot precision to make a precision-recall curve
 p <- ggplot(as.data.frame(roc_ex)) + 
-  geom_line(aes(x=tpr, y=prec), show_guide=TRUE, alpha=0.7) +
+  geom_line(aes(x=tpr, y=prec), alpha=0.7) +
   scale_x_continuous(expand = c(0.01, 0.01)) + 
   scale_y_continuous(expand = c(0.01, 0.01)) + 
-  labs(x="Precision", y="Recall (TPR)") +
+  labs(x="Recall (TPR)", y="Precision") +
   theme_bw()
 
 ggsave(filename="graphics/pr-example.png", plot=p, width=2.2, height=2, units="in",
